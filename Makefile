@@ -1,4 +1,7 @@
-run:
-	@mkdir -p bin/
-	@g++ ./src/main.cpp -o ./bin/main
-	@./bin/main
+default:
+	@make main
+
+%:
+	@mkdir -p bin
+	g++ $*.cpp -o bin/$*
+	./bin/$*
