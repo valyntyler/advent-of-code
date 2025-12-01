@@ -4,4 +4,4 @@ default:
 %:
 	@mkdir -p bin
 	g++ $*.cpp -o bin/$*
-	./bin/$*
+	./bin/$* < example.in
