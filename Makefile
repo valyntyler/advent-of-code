@@ -1,7 +1,9 @@
-default:
-	@make main
-
-%:
+example:
 	@mkdir -p bin
-	g++ $*.cpp -o bin/$*
-	./bin/$* < input.in
+	g++ main.cpp -o bin/main
+	./bin/main < example.in
+
+input:
+	@mkdir -p bin
+	g++ main.cpp -o bin/main
+	./bin/main < input.in
