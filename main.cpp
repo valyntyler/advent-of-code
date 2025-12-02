@@ -39,7 +39,7 @@ int main() {
     // so offset can be 357, -768, etc..
     // meaning (index + offset) % 100 will be the final value of index
 
-    index = (newidx + 10'000) % 100;
+    index = ((newidx % 100) + 100) % 100;
     total += count;
     cout << newidx << " === " << index << ", +" << count << endl;
   }
