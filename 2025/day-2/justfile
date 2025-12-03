@@ -1,5 +1,11 @@
-default: run
+@_default: example
 
-run:
+@example:
+  just run example
+
+@input:
+  just run input
+
+run FILE:
   g++ main.cpp
-  ./a.out < example.in
+  ./a.out < {{FILE}}.in
