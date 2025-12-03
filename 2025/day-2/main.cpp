@@ -12,20 +12,43 @@ int digits(ll n) {
   return count;
 }
 
-bool invalid(ll n) {
+bool invalid(ll n, int l) {
+  ll x = n;
   int count = digits(n);
-  if (count % 2 == 1) {
+  if (count % l != 0) {
     return false;
   }
 
-  count /= 2;
-  int p = 1;
+  count /= l;
+  ll p = 1;
   while (count) {
     --count;
     p *= 10;
   }
 
-  return n / p == n % p;
+  ll last = n % p;
+  for (ll i = 0; i < l; ++i) {
+    bool same = last == n % p;
+    if (!same) {
+      return false;
+    }
+    last = n % p;
+    n /= p;
+  }
+
+  cout << x << endl;
+  return true;
+}
+
+ll invalid_all(ll i) {
+  ll sum;
+  int size = digits(i);
+  for (ll j = 2; j <= size; ++j) {
+    if (invalid(i, j)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 int main() {
@@ -43,12 +66,15 @@ int main() {
 
     cout << range_begin << " - " << range_end << endl;
     for (ll i = range_begin; i <= range_end; ++i) {
-      if (invalid(i)) {
+      if (invalid_all(i)) {
         sum += i;
       }
     }
   }
   cout << sum << endl;
+
+  // cout << invalid_all(7979777777);
+  // cout << invalid(7979777777, 6);
 
   return 0;
 }
