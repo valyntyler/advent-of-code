@@ -1,8 +1,20 @@
 import sys
 
 
-def fresh(n: int, range: list[int]) -> bool:
+def inside(n: int, range: list[int]) -> bool:
     return n >= range[0] and n <= range[1]
+
+
+def intersects(r1: list[int], r2: list[int]) -> bool:
+    return inside(r1[0], r2) or inside(r1[1], r2)
+
+
+def union(r1: list[int], r2: list[int]) -> list[int]:
+    return [min(r1[0], r2[0]), max(r1[1], r2[1])]
+
+
+def delta(range: list[int]) -> int:
+    return range[1] - range[0] + 1
 
 
 def main():
@@ -13,18 +25,18 @@ def main():
         line = line.strip()
         if line == "":
             break
-        range = list(map(int, line.strip().split("-")))
-        ranges.append(range)
+        [a, b] = list(map(int, line.strip().split("-")))
+        ranges.append([a, b])
 
-    for line in sys.stdin:
-        n = int(line.strip())
-        for range in ranges:
-            if fresh(n, range):
-                count += 1
-                print(n, range)
-                break
+    while len(ranges) != 0:
+        current = ranges.pop()
+        for r in ranges[:]:
+            if intersects(current, r):
+                current = union(current, r)
+                ranges.remove(r)
+        count += delta(current)
 
-    print(count)
+    print("total:", count)
 
 
 if __name__ == "__main__":
