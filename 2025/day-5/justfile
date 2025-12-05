@@ -7,4 +7,5 @@
   just run input
 
 run FILE:
-  python3 main.py < {{FILE}}.in
+  g++ main.cpp
+  ./a.out < {{FILE}}.in
