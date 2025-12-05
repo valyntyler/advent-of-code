@@ -1,23 +1,30 @@
 import sys
 
 
+def fresh(n: int, range: list[int]) -> bool:
+    return n >= range[0] and n <= range[1]
+
+
 def main():
+    ranges: list[list[int]] = []
     count: int = 0
-    fresh: set[int] = set()
 
     for line in sys.stdin:
         line = line.strip()
         if line == "":
             break
-        [a, b] = list(map(int, line.strip().split("-")))
-        for i in range(a, b + 1):
-            # print(i)
-            fresh.add(i)
+        range = list(map(int, line.strip().split("-")))
+        ranges.append(range)
 
-    for item in fresh:
-        count += 1
+    for line in sys.stdin:
+        n = int(line.strip())
+        for range in ranges:
+            if fresh(n, range):
+                count += 1
+                print(n, range)
+                break
 
-    print("total:", count)
+    print(count)
 
 
 if __name__ == "__main__":
