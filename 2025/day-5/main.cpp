@@ -48,6 +48,9 @@ int main() {
     ranges.push_back({a, b});
     getline(cin, s);
   }
+  sort(ranges.begin(), ranges.end(), [](range a, range b) {
+    return a.begin < b.begin || (a.begin == b.begin && a.end < b.end);
+  });
 
   vector<range> merged;
   while (!ranges.empty()) {
