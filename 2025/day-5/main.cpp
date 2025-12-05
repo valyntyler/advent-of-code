@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include <iterator>
 
 using namespace std;
 using ll = long long;
@@ -12,7 +11,8 @@ struct range {
   bool contains(ll point) { return point >= this->begin && point <= this->end; }
 
   bool intersects(range r) {
-    return this->contains(r.begin) || this->contains(r.end);
+    return this->contains(r.begin) || this->contains(r.end) ||
+           r.contains(this->begin) || r.contains(this->end);
   }
 
   range range_union(range r) {
