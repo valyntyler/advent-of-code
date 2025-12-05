@@ -13,6 +13,19 @@ def union(r1: list[int], r2: list[int]) -> list[int]:
     return [min(r1[0], r2[0]), max(r1[1], r2[1])]
 
 
+def union_list(ranges: list[list[int]]):
+    for i in range(len(ranges)):
+        for j in range(i + 1, len(ranges)):
+            r1 = ranges[i]
+            r2 = ranges[j]
+            if intersects(r1, r2):
+                r1 = union(r1, r2)
+                ranges.remove(r2)
+                union_list(ranges)
+                print(r1)
+                return
+
+
 def delta(range: list[int]) -> int:
     return range[1] - range[0] + 1
 
@@ -28,13 +41,10 @@ def main():
         [a, b] = list(map(int, line.strip().split("-")))
         ranges.append([a, b])
 
-    while len(ranges) != 0:
-        current = ranges.pop()
-        for r in ranges[:]:
-            if intersects(current, r):
-                current = union(current, r)
-                ranges.remove(r)
-        count += delta(current)
+    union_list(ranges)
+
+    # for r in ranges:
+    #     print(r)
 
     print("total:", count)
 
