@@ -1,0 +1,10 @@
+@_default: example
+
+@example:
+  just run example
+
+@input:
+  just run input
+
+run FILE:
+  python3 main.py < {{FILE}}.in
