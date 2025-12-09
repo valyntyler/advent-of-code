@@ -6,9 +6,9 @@ using ll = long long;
 
 vector<vector<char>> grid;
 vector<pair<int, int>> visited;
+map<pair<int, int>, ll> cached_timelines;
 
 int start;
-int splits = 0;
 
 void print() {
   for (int i = 0; i < grid.size(); i++) {
@@ -40,34 +40,51 @@ void read() {
   }
 }
 
-void process(int x, int y) {
+ll process(int x, int y) {
+  pair<int, int> coords = {x, y};
+  auto visits = count(visited.begin(), visited.end(), coords);
+  if (visits) {
+    cout << "[" << x << ",";
+    cout << " " << y << "]";
+    cout << ": " << cached_timelines[coords] << endl;
+    return cached_timelines[coords];
+  }
+
+  ll timelines = 0;
   for (int j : {x - 1, x + 1}) {
-    for (int i = y + 1; i < grid.size(); i++) {
+    int i;
+    for (i = y + 1; i < grid.size(); i++) {
       if (grid[i][j] == '^') {
-        pair<int, int> coords = {j, i};
-        int visits = count(visited.begin(), visited.end(), coords);
-        if (visits == 0) {
-          // cout << "[" << j << "," << i << "]" << endl;
-          ++splits;
-          process(j, i);
-          visited.push_back(coords);
-        }
+        timelines += process(j, i);
         break;
       }
     }
+    if (i == grid.size()) {
+      ++timelines;
+    }
   }
+
+  // cout << "[" << x << ",";
+  // cout << " " << y << "]";
+  // cout << ": " << timelines << endl;
+
+  visited.push_back(coords);
+  cached_timelines[coords] = timelines;
+
+  return timelines;
 }
 
 int main() {
   read();
   print();
-  process(start, 0);
-  for (auto val : visited) {
-    int x = val.first;
-    int y = val.second;
-    grid[y][x] = 'x';
-  }
-  print();
-  cout << "splits: " << splits + 1 << endl;
+  ll timelines = process(start, 0);
+  cout << "timelines: " << timelines << endl;
+
+  // for (auto item : cached_timelines) {
+  //   cout << "[" << item.first.first << ",";
+  //   cout << " " << item.first.second << "]";
+  //   cout << ": " << item.second << endl;
+  // }
+
   return 0;
 }
