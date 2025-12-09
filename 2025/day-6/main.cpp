@@ -1,85 +1,84 @@
 #include <bits/stdc++.h>
-#include <sstream>
+#include <istream>
 
 using namespace std;
 using ll = long long;
 
-enum operation { Add, Mul };
-
-vector<vector<ll>> problems;
-
-ll solve_problem(int j, operation op) {
-  ll total = 0;
-  switch (op) {
-  case Add:
-    total = 0;
-    break;
-  case Mul:
-    total = 1;
-    break;
+void print(vector<ll> numbers) {
+  for (auto number : numbers) {
+    cout << number << " ";
   }
-  for (int i = 0; i < problems.size() - 1; ++i) {
-    ll n = problems[i][j];
-    switch (op) {
-    case Add:
-      total += n;
-      break;
-    case Mul:
-      total *= n;
-      break;
+  cout << endl;
+}
+
+ll compute(vector<ll> &numbers, bool add) {
+  if (numbers.size() == 0) {
+    return 0;
+  }
+
+  ll total = 0;
+  if (!add) {
+    total = 1;
+  }
+  for (auto number : numbers) {
+    if (add) {
+      total += number;
+    } else {
+      total *= number;
     }
   }
+  cout << (add ? "(+)" : "(*)") << " ";
+  print(numbers);
+  cout << "total: " << total << endl;
+  numbers.clear();
   return total;
 }
 
 int main() {
-  ll total;
   ll grand;
 
-  int i = 0;
+  vector<string> lines;
+
   while (!cin.eof()) {
     string line;
     getline(cin, line);
+    lines.push_back(line);
+  }
 
-    stringstream ss(line);
-    int j = 0;
+  ll total = 0;
+  bool add = true;
+  vector<ll> numbers;
 
-    if (line == "") {
-      continue;
-    }
-
-    problems.push_back({});
-    while (!ss.eof()) {
-      string token;
-      ss >> token;
-      switch (token[0]) {
+  for (ll j = 0; j < lines[2].size(); ++j) {
+    ll n = 0;
+    for (ll i = 0; i < lines.size() - 1; ++i) {
+      char c = lines[i][j];
+      switch (c) {
       case '*':
-        problems[i].push_back(solve_problem(j, Mul));
+        grand += compute(numbers, add);
+        add = false;
         break;
       case '+':
-        problems[i].push_back(solve_problem(j, Add));
+        grand += compute(numbers, add);
+        add = true;
         break;
-      default:
-        problems[i].push_back(stoi(token));
+      case ' ':
         break;
       }
-      ++j;
+      if (c >= '0' && c <= '9') {
+        int d = c - '0';
+        n *= 10;
+        n += d;
+      }
     }
-    ++i;
-  }
-
-  for (auto row : problems) {
-    for (auto token : row) {
-      cout << token << " ";
+    if (n != 0) {
+      // cout << n << endl;
+      numbers.push_back(n);
     }
-    cout << endl;
   }
 
-  for (int k = 0; k < problems[0].size(); ++k) {
-    grand += problems[problems.size() - 1][k];
-  }
-
-  cout << grand << endl;
+  grand += compute(numbers, add);
+  cout << "grand total: " << grand << endl;
 
   return 0;
 }
