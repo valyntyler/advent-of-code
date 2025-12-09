@@ -18,7 +18,7 @@ ll solve_problem(int j, operation op) {
     total = 1;
     break;
   }
-  for (int i = 0; i < problems[0].size() - 1; ++i) {
+  for (int i = 0; i < problems.size() - 1; ++i) {
     ll n = problems[i][j];
     switch (op) {
     case Add:
