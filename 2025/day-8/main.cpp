@@ -66,27 +66,30 @@ int main() {
 
   sort(distances_swapped.begin(), distances_swapped.end());
 
-  for (auto elem : distances_swapped) {
-    cout << elem.first << endl;
-  }
-
-  size_t size = junctions.size();
-  vector<vector<bool>> connections(size, vector<bool>(size));
   int k = 10;
+  vector<vector<size_t>> components;
+  vector<size_t> visited;
+
   for (auto d : distances_swapped) {
     if (k == 0) {
       break;
     }
-    connections[d.second.first][d.second.second] = true;
-    connections[d.second.second][d.second.first] = true;
-    --k;
-  }
 
-  for (auto row : connections) {
-    for (auto val : row) {
-      cout << (val ? 'x' : '.') << " ";
+    auto edge = d.second;
+    for (auto comp : components) {
+      if (count(comp.begin(), comp.end(), edge.first)) {
+      }
+      if (count(comp.begin(), comp.end(), edge.second)) {
+      }
     }
-    cout << endl;
+
+    visited.push_back(edge.first);
+    visited.push_back(edge.second);
+
+    cout << "[" << edge.first << ", " << edge.second << "]";
+    cout << ": " << d.first << endl;
+
+    --k;
   }
 
   return 0;
