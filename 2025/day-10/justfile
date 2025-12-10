@@ -1,0 +1,5 @@
+run:
+  python3 main.py < example.in
+
+input:
+  python3 main.py < input.in
